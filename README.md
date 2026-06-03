@@ -1,231 +1,225 @@
-# 🤖 AI-Powered Facebook Messenger Chatbot with n8n
+# 🤖 AI-Powered Facebook Messenger Chatbot using n8n & Google Gemini
 
-An intelligent Facebook Messenger chatbot built using **n8n**, **Google Gemini AI**, **Google Sheets**, and **Google Docs** integration.
-
-This workflow receives messages from Facebook Messenger, processes them using Google's Gemini AI model, maintains conversation memory, accesses Google Docs and Google Sheets as knowledge sources, and sends AI-generated responses back to users.
+An intelligent Facebook Messenger chatbot built with **n8n**, **Google Gemini AI**, and **Google Sheets** integration. The chatbot automatically receives messages from Facebook Messenger, processes them through an AI agent, maintains conversation memory, retrieves data from Google Sheets, and responds instantly to users.
 
 ---
 
 ## 🚀 Features
 
-- ✅ Facebook Messenger Webhook Integration
-- ✅ Facebook Webhook Verification
-- ✅ Google Gemini AI Agent
-- ✅ Conversation Memory Support
-- ✅ Google Docs Knowledge Retrieval
-- ✅ Google Sheets Data Retrieval
-- ✅ Automatic AI Response Generation
-- ✅ Real-time Message Processing
-- ✅ No-Code/Low-Code Automation using n8n
+* 💬 Facebook Messenger Integration
+* 🤖 AI-Powered Responses using Google Gemini
+* 🧠 Conversation Memory Support
+* 📊 Google Sheets Data Retrieval
+* 🔄 Automated Message Processing
+* ⚡ Real-Time Response Delivery
+* 🛠️ No-Code/Low-Code Workflow with n8n
 
 ---
 
-## 🏗️ Workflow Architecture
+## 🏗️ Workflow Overview
 
-```text
-Facebook Messenger
-        │
-        ▼
-    Webhook
-        │
-        ▼
-Webhook Verification
-        │
-        ▼
-     AI Agent
-        │
- ┌──────┼─────────┐
- │      │         │
- ▼      ▼         ▼
-Gemini  Memory  Google Tools
-Model           (Docs/Sheets)
- │
- ▼
-AI Response
- │
- ▼
-Facebook Graph API
- │
- ▼
-Messenger User
+```mermaid
+graph LR
+A[Facebook Messenger User] --> B[Webhook]
+B --> C[Webhook Verification]
+B --> D[AI Agent]
+
+D --> E[Google Gemini Model]
+D --> F[Memory Buffer]
+D --> G[Google Sheets Tool]
+
+D --> H[Generate Response]
+H --> I[Facebook Graph API]
+I --> A
 ```
 
 ---
 
-## 📋 Workflow Components
+## 📋 Components
 
-### 1. Webhook Node
+### 1. Webhook
+
 Receives incoming Facebook Messenger events and messages.
 
-### 2. IF Node
-Handles Facebook webhook verification by checking:
+### 2. Verification Logic
 
-- `hub.mode = subscribe`
-- `hub.verify_token = Our_shop`
+Validates Facebook webhook requests using:
 
-### 3. Respond to Webhook
-Returns the Facebook challenge token during webhook verification.
+* `hub.mode = subscribe`
+* Custom verification token
 
-### 4. AI Agent
-Processes user queries using Google Gemini AI.
+### 3. AI Agent
 
-System Prompt:
+Processes user questions and generates intelligent responses.
+
+**System Prompt**
 
 ```text
 You are a helpful AI assistant
 ```
 
-### 5. Google Gemini Chat Model
-Provides Large Language Model capabilities for the AI Agent.
+### 4. Google Gemini Chat Model
 
-### 6. Simple Memory
-Stores conversation history using Facebook Sender ID as session key.
+Provides the Large Language Model (LLM) capabilities for natural language understanding and response generation.
 
-### 7. Google Docs Tool
-Allows the AI Agent to retrieve information from Google Docs.
+### 5. Simple Memory
 
-### 8. Google Sheets Tool
-Allows the AI Agent to retrieve data from Google Sheets.
+Stores conversation context using the sender's Facebook ID, enabling more natural multi-turn conversations.
 
-### 9. HTTP Request Node
-Sends generated AI responses back to Facebook Messenger using the Facebook Graph API.
+### 6. Google Sheets Tool
 
----
+Allows the AI Agent to retrieve and analyze information stored in Google Sheets.
 
-## 🛠️ Technologies Used
+### 7. HTTP Request
 
-| Technology | Purpose |
-|------------|----------|
-| n8n | Workflow Automation |
-| Google Gemini | AI Processing |
-| Facebook Messenger API | Messaging Platform |
-| Google Sheets API | Structured Data Source |
-| Google Docs API | Knowledge Base |
-| HTTP Requests | API Communication |
+Sends AI-generated responses back to Facebook Messenger using the Facebook Graph API.
 
 ---
 
-## 📦 Requirements
+## 🛠️ Tech Stack
 
-- n8n Instance
-- Facebook Developer Account
-- Facebook Page
-- Google Gemini API Key
-- Google OAuth Credentials
-- Google Sheets Access
-- Google Docs Access
+| Technology             | Purpose             |
+| ---------------------- | ------------------- |
+| n8n                    | Workflow Automation |
+| Google Gemini          | AI Processing       |
+| Facebook Messenger API | Messaging Platform  |
+| Google Sheets API      | Data Source         |
+| HTTP Requests          | API Communication   |
 
 ---
 
-## ⚙️ Setup Guide
+## 📦 Prerequisites
+
+Before running this workflow, make sure you have:
+
+* n8n instance (Cloud or Self-hosted)
+* Facebook Developer Account
+* Facebook Page
+* Google Gemini API Key
+* Google Sheets OAuth Credentials
+
+---
+
+## ⚙️ Setup Instructions
 
 ### Step 1: Import Workflow
 
 1. Open n8n.
 2. Click **Import Workflow**.
-3. Upload the JSON workflow file.
+3. Upload the provided JSON workflow file.
 
 ### Step 2: Configure Credentials
 
-Add:
+Add the following credentials:
 
-- Google Gemini API
-- Google Docs OAuth2
-- Google Sheets OAuth2
+* Google Gemini API
+* Google Sheets OAuth2
 
-### Step 3: Configure Facebook Webhook
+### Step 3: Configure Facebook Messenger
 
-Set:
+Create a Facebook App and Messenger Webhook.
+
+Set the webhook URL:
 
 ```text
-Webhook URL:
-https://YOUR_N8N_DOMAIN/webhook/DailyGoods_messenger_bot
-
-Verify Token:
-Our_shop
+https://your-domain.com/webhook/DailyGoods_messenger_bot
 ```
+
+Set your verify token to match the workflow configuration.
 
 ### Step 4: Subscribe Messenger Events
 
 Enable:
 
-- messages
-- messaging_postbacks
+```text
+messages
+messaging_postbacks
+```
 
 ### Step 5: Activate Workflow
 
-Turn on the workflow and test by sending a message to your Facebook Page.
+Enable the workflow and send a message to your Facebook Page.
 
 ---
 
-## 💬 Example Usage
+## 💡 Example Use Cases
 
-### User
+### Student Information Bot
+
+Users can ask:
 
 ```text
 What is my grade?
 ```
 
-### AI Agent
+The AI agent retrieves information from Google Sheets and returns the appropriate response.
 
-1. Reads data from Google Sheets.
-2. Processes the request using Gemini.
-3. Generates a response.
+### Customer Support Assistant
 
-### Messenger Response
+Users can ask:
 
 ```text
-Your current grade is A.
+What are your business hours?
 ```
 
----
-
-## 🔒 Security Notes
-
-Before publishing:
-
-- Remove Facebook Page Access Tokens.
-- Remove Google Credential IDs.
-- Store secrets using n8n Credentials Manager.
-- Use environment variables whenever possible.
+The AI agent responds automatically based on available data and context.
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```text
-project/
-│
+.
 ├── workflow.json
 ├── README.md
-└── assets/
-    └── workflow-diagram.png
+└── screenshots/
+    └── workflow.png
 ```
 
 ---
 
-## 🎯 Future Improvements
+## 🔒 Security Recommendations
 
-- Multi-language support
-- Product recommendation system
-- Order tracking integration
-- Customer support ticket creation
-- Database integration
-- Voice message support
-- Image understanding with Gemini Vision
+Before publishing to GitHub:
+
+* Remove all API keys and access tokens.
+* Store secrets using n8n Credentials.
+* Use environment variables where possible.
+* Never commit Facebook Page Access Tokens to a public repository.
+
+---
+
+## 📈 Future Improvements
+
+* Google Docs Integration
+* Product Catalog Search
+* Order Tracking System
+* Multi-language Support
+* Voice Message Processing
+* Database Integration (MySQL/PostgreSQL)
+* Image Analysis with Gemini Vision
 
 ---
 
 ## 👨‍💻 Author
 
-Developed using:
+**Nabil Thahamid Chowdhury**
 
-- n8n
-- Google Gemini AI
-- Facebook Messenger Platform
+Computer Science Student | Full-Stack Developer | AI Enthusiast
+
+### Connect with me
+
+* GitHub: `https://github.com/Nabilthahamid`
+* LinkedIn: `https://www.linkedin.com/in/nabil-thamid-548842249/`
+
+---
+
+## ⭐ Support
+
+If you found this project useful, consider giving it a ⭐ on GitHub.
 
 ---
 
 ## 📄 License
 
-This project is available under the MIT License.
+This project is licensed under the MIT License.
